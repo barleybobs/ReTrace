@@ -5,7 +5,7 @@ ReTrace is a python script that can be used to trace redirects. This tool can be
 Currently ReTrace can detect:
 
 -   Header redirects  _(201, 301, 302, 303, 307, and 308 redirects)_
--   Meta Refresh redirects
+-   Meta Refresh redirects _(HTML redirects)_
 
 For each redirect ReTrace will retrieve:
 
