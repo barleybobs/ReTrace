@@ -29,7 +29,7 @@ def find_shortest_meta_refresh(location, source_code):
     encoded_path = quote(parsed_shortest_url.path)
 
     if parsed_shortest_url.scheme == "" and parsed_shortest_url.netloc == "" and parsed_shortest_url.path in ["url=", ""]:
-        # If captured url
+        # If the captured meta refresh URL argument is empty (it is a refresh/reload not redirect)
         return None, None
     elif re.match(r'//(?![/])', shortest_url) is not None:
         # If redirect is "//google.com" then it should go to http://google.com
@@ -41,7 +41,7 @@ def find_shortest_meta_refresh(location, source_code):
         # If the redirect is relative then calculate the full url
         shortest_url = urljoin(location, f"{parsed_shortest_url.netloc}{encoded_path}{"?" if parsed_shortest_url.query != "" else ""}{parsed_shortest_url.query}")
     else:
-        # Otherwise get the url being redirected to
+        # Otherwise get the URL being redirected to
         # lstrip is used to handle https:/// or http:/// cases and remove the extra / from the scheme
         shortest_url = f"{parsed_shortest_url.scheme}://{parsed_shortest_url.netloc}{encoded_path.lstrip("/")}{"?" if parsed_shortest_url.query != "" else ""}{parsed_shortest_url.query}"
 
@@ -86,10 +86,10 @@ while location:
         redirect["type"] = "Header"
         redirect["delay"] = "0.0s"
         if urlsplit(response.headers["location"]).scheme == "":
-            # If the redirect is relative then calculate the full url
+            # If the redirect is relative then calculate the full URL
             location = urljoin(location, response.headers["location"])
         else:
-            # Otherwise get the url being redirected to
+            # Otherwise get the URL being redirected to
             location = response.headers["location"]
 
     else:
